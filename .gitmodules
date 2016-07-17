@@ -1,0 +1,3 @@
+[submodule "jswheel"]
+	path = jswheel
+	url = https://github.com/zarocknz/javascript-winwheel.git

@@ -1,0 +1,139 @@
+<html>
+<head>
+  <title>VOLUNTOLD</title>
+  <script src="jswheel/Winwheel.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.18.5/TweenMax.min.js"></script>
+</head>
+
+<body>
+
+  <canvas id='canvas' width='400' height='400'>
+    Canvas not supported, use another browser.
+  </canvas>
+  <audio id="winsound">
+    <source src="Wrong-answer-sound-effect.mp3" />
+</audio>
+
+<button id="bigButton2" class="bigButton" onclick="spin_da_wheel();">SPIN</button>
+<textarea id="myTextBox" cols="50" rows="5" onchange="updateSpinWheel();">
+CANDIDATE 1
+CANDIDATE 2
+</textarea>
+
+<script>
+    var animated = false;
+
+    function updateSpinWheel() {
+      var dudesStr = document.getElementById('myTextBox').value;
+      var dudes = dudesStr.split('\n');
+      var colourSwitch = false;
+
+      for (var i = 0; i < dudes.length; ++i)
+      {
+        var colour = '#eae56f';
+        if (!colourSwitch)
+        {
+          colour = '#89f26e';
+        }
+        colourSwitch = !colourSwitch;
+
+        if (i < colourWheel.numSegments)
+        {
+          colourWheel.segments[i + 1].text = dudes[i];
+          colourWheel.segments[i + 1].fillStyle = colour;
+        }
+        else {
+          colourWheel.addSegment({
+            'text' : dudes[i],
+            'fillStyle' : colour
+          });
+        }
+      }
+
+      var removeNum = dudes.length - colourWheel.numSegments;
+      for (var i = 0; i < removeNum; ++i) {
+        colourWheel.deleteSegment();
+      }
+
+      colourWheel.draw();
+      drawColourTriangle();
+    }
+
+    function spin_da_wheel() {
+      if (animated) {
+        resetColourWheel();
+      }
+      animated = true;
+      colourWheel.startAnimation();
+    }
+
+    var colourWheel = new Winwheel({
+        'numSegments'    : 4,
+        'outerRadius'    : 170,
+        'canvasId'       : 'canvas',
+        'pointerAngle'   : 90,              // Remember to specify if not default of 0 degrees.
+        'segments'       :
+        [
+           {'fillStyle' : '#eae56f', 'text' : 'Candidate 1'},
+           {'fillStyle' : '#89f26e', 'text' : 'Candidate 2'},
+           {'fillStyle' : '#7de6ef', 'text' : 'Candidate 3'},
+           {'fillStyle' : '#e7706f', 'text' : 'Candidate 4'}
+        ],
+        'animation' :
+        {
+            'type'     : 'spinToStop',
+            'duration' : 5,
+            'spins'    : 8,
+
+            // To do something after the animation has finished specify callback function.
+            'callbackFinished' : 'winAnimation()',
+
+            // During the animation need to call function to re-draw triangle.
+            'callbackAfter' : 'drawColourTriangle()'
+        }
+    });
+
+    // This function called after the spin animation has stopped.
+    function winAnimation()
+    {
+        // Get the audio with the sound it in, then play.
+        var winsound = document.getElementById('winsound');
+        winsound.play();
+    }
+
+    drawColourTriangle();
+
+    // Draw pointer on canvas, this time on the right.
+    function drawColourTriangle()
+    {
+        // Get context used by the wheel.
+        var ctx = colourWheel.ctx;
+
+        ctx.strokeStyle = 'navy';  // Set line colour.
+        ctx.fillStyle   = 'aqua';  // Set fill colour.
+        ctx.lineWidth   = 2;
+        ctx.beginPath();           // Begin path.
+
+        ctx.moveTo(390, 174);      // Move to initial position.
+        ctx.lineTo(390, 226);      // Draw lines to make the shape.
+        ctx.lineTo(360, 200);
+        ctx.lineTo(390, 175);
+        ctx.stroke();              // Complete the path by stroking (draw lines).
+        ctx.fill();
+    }
+
+    // Called when reset is clicked.
+    function resetColourWheel()
+    {
+        // Stop animation and set angle back to 0.
+        colourWheel.stopAnimation(false);
+        colourWheel.rotationAngle=0;
+
+        // Call draw to render changes and then triangle function so pointer appears.
+        colourWheel.draw();
+        drawColourTriangle();
+    }
+</script>
+
+</body>
+</html>

@@ -1,11 +1,46 @@
 <html>
 <head>
   <title>VOLUNTOLD</title>
+
+  <style>
+  body
+  {
+background-color: white;
+  }
+
+  .button {
+    display: inline-block;
+    padding: 15px 25px;
+    font-size: 24px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    outline: none;
+    color: #000;
+    background-color: #cc0000
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 5px #999;
+  }
+
+  .button:hover {background-color: #ff3333}
+
+  .button:active {
+    background-color: #ff3333;
+    box-shadow: 0 3px #666;
+    transform: translateY(4px);
+
+  }
+  </style>
+
   <script src="jswheel/Winwheel.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.18.5/TweenMax.min.js"></script>
+
 </head>
 
-<body>
+<body align = "center">
+
+<div class="example">
 
   <canvas id='canvas' width='400' height='400'>
     Canvas not supported, use another browser.
@@ -13,18 +48,19 @@
   <audio id="winsound">
     <source src="Wrong-answer-sound-effect.mp3" />
 </audio>
+</br></br>
+        <button id="button" class="button" onclick="spin_da_wheel();">SPIN</button>
 
-<button id="bigButton2" class="bigButton" onclick="spin_da_wheel();">SPIN</button>
-<textarea id="myTextBox" cols="50" rows="5" onchange="updateSpinWheel();">
-CANDIDATE 1
-CANDIDATE 2
-</textarea>
-
+</br></br></br>
+          <textarea id="Box" cols="50" rows="5" onchange="updateSpinWheel();">
+          CANDIDATE 1
+          CANDIDATE 2
+          </textarea>
 <script>
     var animated = false;
 
     function updateSpinWheel() {
-      var dudesStr = document.getElementById('myTextBox').value;
+      var dudesStr = document.getElementById('Box').value;
       var dudes = dudesStr.split('\n');
       var colourSwitch = false;
 
@@ -134,6 +170,8 @@ CANDIDATE 2
         drawColourTriangle();
     }
 </script>
+
+</div>
 
 </body>
 </html>
